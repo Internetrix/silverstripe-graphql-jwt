@@ -10,18 +10,6 @@ SilverStripe\Core\Injector\Injector:
     properties:
       Authenticator: %$Firesphere\GraphQLJWT\Authentication\JWTAuthenticator
 ---
-after: graphqlroutes
----
-SilverStripe\Control\Director:
-  rules:
-    graphql:
-      Controller: 'SilverStripe\GraphQL\Controller'
-      # @internal - Experimental config
-      # @todo - move this to a per-schema configuration, and simply register the named schema for this endpoint
-      # https://github.com/silverstripe/silverstripe-graphql/issues/52
-      Stage: Live
-      Permissions: false
----
 name: graphqljwt
 after:
   - '#coresecurity'
