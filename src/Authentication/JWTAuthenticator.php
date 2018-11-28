@@ -204,17 +204,16 @@ class JWTAuthenticator extends MemberAuthenticator
     private function getValidator($request, $parsedToken)
     {
         $audience = $request->getHeader('Origin');
-
+        $uid = $parsedToken->getClaim('uid');
         $member = null;
         $id = null;
         $validator = new ValidationData();
         $validator->setIssuer($audience);
         $validator->setAudience(Director::absoluteBaseURL());
 
-        if ($parsedToken->getClaim('uid') === 0 && static::config()->get('anonymous_allowed')) {
+        if ($uid === 0 && static::config()->get('anonymous_allowed')) {
             $id = $request->getSession()->get('jwt_uid');
-        } elseif ($parsedToken->getClaim('uid') > 0) {
-            $member = Member::get()->byID($parsedToken->getClaim('uid'));
+        } elseif ($uid > 0 && $member = Member::get()->byID($uid)) {
             $id = $member->JWTUniqueID;
         }
 
